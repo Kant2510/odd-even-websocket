@@ -1,7 +1,7 @@
 import { WINNING_COMBOS } from './constant'
 
 export const checkWinner = (board: string[]) => {
-    for (let combo of WINNING_COMBOS) {
+    for (const combo of WINNING_COMBOS) {
         const [a, b, c] = combo
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
             return board[a]

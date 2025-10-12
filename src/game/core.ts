@@ -3,7 +3,7 @@ import { checkEndTheGame, checkWinner } from './utils'
 type CountFn = () => void
 
 export const minimax = (board: string[], depth: number, isMaximizing: boolean, onEvaluate: CountFn): number => {
-    // Mỗi lần vào node (trạng thái) ta coi như 1 evaluation
+    // Each time a position is evaluated, call the evaluation function
     onEvaluate()
 
     const result = checkWinner(board)
@@ -18,7 +18,8 @@ export const minimax = (board: string[], depth: number, isMaximizing: boolean, o
         for (let i = 0; i < board.length; i++) {
             if (board[i] === '') {
                 board[i] = 'o'
-                let score = minimax(board, depth + 1, false, onEvaluate)
+                // Evaluate the position using minimax with depth incremented
+                const score = minimax(board, depth + 1, false, onEvaluate)
                 board[i] = ''
                 bestScore = Math.max(score, bestScore)
             }
@@ -29,7 +30,7 @@ export const minimax = (board: string[], depth: number, isMaximizing: boolean, o
         for (let i = 0; i < board.length; i++) {
             if (board[i] === '') {
                 board[i] = 'x'
-                let score = minimax(board, depth + 1, true, onEvaluate)
+                const score = minimax(board, depth + 1, true, onEvaluate)
                 board[i] = ''
                 bestScore = Math.min(score, bestScore)
             }
@@ -80,17 +81,11 @@ export const findBestMove = (board: string[], difficulty: string, onEvaluate: Co
     for (let i = 0; i < board.length; i++) {
         if (board[i] === '') {
             board[i] = 'o'
-            let score = minimax(board, 0, false, onEvaluate)
+            const score = minimax(board, 0, false, onEvaluate)
             board[i] = ''
 
             // Prefer priority squares if scores are close
-            // const priorityBonus = prioritySquares.includes(i) ? 0.5 : 0
             const prio = i === 4 ? 2 : prioritySquares.includes(i) ? 1 : 0
-
-            // if (score + priorityBonus > bestScore) {
-            //     bestScore = score
-            //     bestMove = i
-            // }
 
             if (score > bestScore || (score === bestScore && prio > bestPrio)) {
                 bestScore = score

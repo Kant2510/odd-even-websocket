@@ -59,7 +59,7 @@ export const useTicTacToe = () => {
                 }
             }
         }
-    }, [turn, isAiMode, winner, difficulty])
+    }, [turn, isAiMode, winner, difficulty, squares, recordHistory])
 
     const resetGame = () => {
         setSquares(Array(9).fill(''))
