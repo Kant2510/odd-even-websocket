@@ -1,6 +1,11 @@
-import { checkWinner, checkEndTheGame } from './gameLogic'
+import { checkEndTheGame, checkWinner } from './utils'
 
-export const minimax = (board: string[], depth: number, isMaximizing: boolean): number => {
+type CountFn = () => void
+
+export const minimax = (board: string[], depth: number, isMaximizing: boolean, onEvaluate: CountFn): number => {
+    // Mỗi lần vào node (trạng thái) ta coi như 1 evaluation
+    onEvaluate()
+
     const result = checkWinner(board)
 
     // Scoring with depth consideration
@@ -13,7 +18,7 @@ export const minimax = (board: string[], depth: number, isMaximizing: boolean): 
         for (let i = 0; i < board.length; i++) {
             if (board[i] === '') {
                 board[i] = 'o'
-                let score = minimax(board, depth + 1, false)
+                let score = minimax(board, depth + 1, false, onEvaluate)
                 board[i] = ''
                 bestScore = Math.max(score, bestScore)
             }
@@ -24,7 +29,7 @@ export const minimax = (board: string[], depth: number, isMaximizing: boolean): 
         for (let i = 0; i < board.length; i++) {
             if (board[i] === '') {
                 board[i] = 'x'
-                let score = minimax(board, depth + 1, true)
+                let score = minimax(board, depth + 1, true, onEvaluate)
                 board[i] = ''
                 bestScore = Math.min(score, bestScore)
             }
@@ -33,7 +38,7 @@ export const minimax = (board: string[], depth: number, isMaximizing: boolean): 
     }
 }
 
-export const findBestMove = (board: string[], difficulty: string): number => {
+export const findBestMove = (board: string[], difficulty: string, onEvaluate: CountFn): number => {
     // Easy Mode: Random move
     if (difficulty === 'easy') {
         const emptySquares = board.reduce((acc: number[], sq, idx) => (sq === '' ? [...acc, idx] : acc), [] as number[])
@@ -52,6 +57,7 @@ export const findBestMove = (board: string[], difficulty: string): number => {
     for (let i = 0; i < board.length; i++) {
         if (board[i] === '') {
             board[i] = 'o'
+            onEvaluate()
             const winner = checkWinner(board)
             board[i] = ''
             if (winner === 'o') return i
@@ -62,6 +68,7 @@ export const findBestMove = (board: string[], difficulty: string): number => {
     for (let i = 0; i < board.length; i++) {
         if (board[i] === '') {
             board[i] = 'x'
+            onEvaluate()
             const winner = checkWinner(board)
             board[i] = ''
             if (winner === 'x') return i
@@ -69,17 +76,25 @@ export const findBestMove = (board: string[], difficulty: string): number => {
     }
 
     // Use Minimax for remaining moves
+    let bestPrio = -1
     for (let i = 0; i < board.length; i++) {
         if (board[i] === '') {
             board[i] = 'o'
-            let score = minimax(board, 0, false)
+            let score = minimax(board, 0, false, onEvaluate)
             board[i] = ''
 
             // Prefer priority squares if scores are close
-            const priorityBonus = prioritySquares.includes(i) ? 0.5 : 0
+            // const priorityBonus = prioritySquares.includes(i) ? 0.5 : 0
+            const prio = i === 4 ? 2 : prioritySquares.includes(i) ? 1 : 0
 
-            if (score + priorityBonus > bestScore) {
+            // if (score + priorityBonus > bestScore) {
+            //     bestScore = score
+            //     bestMove = i
+            // }
+
+            if (score > bestScore || (score === bestScore && prio > bestPrio)) {
                 bestScore = score
+                bestPrio = prio
                 bestMove = i
             }
         }
