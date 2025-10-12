@@ -49,17 +49,7 @@ const HistoryPanel = ({ history, resetHistory }: HistoryListProps) => {
     const historyData = useMemo<RecordType[]>(() => getData(history.matches), [history.matches])
 
     return (
-        <div
-            style={{
-                position: 'absolute',
-                top: 100,
-                right: 40,
-                width: 400,
-                borderRadius: 10,
-                border: '1px solid #ccc',
-                paddingTop: 10,
-            }}
-        >
+        <div className='history-panel'>
             <h2>Game History</h2>
             <h3 style={{ color: 'orange' }}>
                 <FireOutlined /> {history.streakOwner ? `Player ${history.streakOwner.toUpperCase()}` : 'No one'}'s
@@ -86,6 +76,30 @@ const HistoryPanel = ({ history, resetHistory }: HistoryListProps) => {
             >
                 <DeleteOutlined onClick={resetHistory} />
             </div>
+
+            {/* CSS-in-JSX for orientation-based width */}
+            <style>{`
+        .history-panel {
+          border-radius: 10px;
+          border: 1px solid #ccc;
+          padding-top: 10px;
+          transition: width 0.3s ease;
+        }
+
+        /* Portrait (mobile): full width */
+        @media (orientation: portrait) {
+          .history-panel {
+            width: 100%;
+          }
+        }
+
+        /* Landscape: fixed width 400px */
+        @media (orientation: landscape) {
+          .history-panel {
+            width: 400px;
+          }
+        }
+      `}</style>
         </div>
     )
 }

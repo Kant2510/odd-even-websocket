@@ -16,6 +16,7 @@ const ResultAnimation = ({ winner, resetGame }: ResultAnimationProps) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
+                    className='winner'
                     style={{
                         position: 'absolute',
                         width: '100vw',
