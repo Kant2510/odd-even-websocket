@@ -41,6 +41,12 @@ Built for both fun and performance, this project demonstrates strategic AI behav
 
 ---
 
+## 📌 Live Demo
+
+-   [Demo](https://tic-tac-toe-dun-omega.vercel.app/)
+
+---
+
 ## 🏗️ Project Structure
 
 ```
