@@ -4,7 +4,7 @@ import Square from '../components/Square'
 import AIToggle from '../components/AIToggle'
 import ResultAnimation from '../components/ResultAnimation'
 import Board from '../components/Board'
-import HistoryList from '../components/History'
+import HistoryPanel from '../components/HistoryPanel'
 import MetricsPanel from '../components/MetricPanel'
 
 function GameScreen() {
@@ -49,7 +49,7 @@ function GameScreen() {
             </div>
             <ResultAnimation winner={winner} resetGame={resetGame} />
             <MetricsPanel positions={metrics.positionsEvaluated} ms={metrics.thinkingMs} />
-            <HistoryList history={history} resetHistory={resetHistory} />
+            <HistoryPanel history={history} resetHistory={resetHistory} />
         </div>
     )
 }

@@ -1,73 +1,147 @@
-# React + TypeScript + Vite
+# 🎯 TicTacToe React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern **React + TypeScript** implementation of the classic **TicTacToe** game — featuring an intelligent AI opponent, real-time score tracking, and persistent match history.
+Built for both fun and performance, this project demonstrates strategic AI behavior, optimized React hooks, and a clean, interactive UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+-   🎮 **2 Game Modes**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+    -   **Player vs Player (PvP)** – Play locally with a friend.
+    -   **Player vs AI (PvAI)** – Battle against a smart AI with two distinct difficulty levels.
 
-## Expanding the ESLint configuration
+-   🧠 **AI Difficulty**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+    -   **Easy Mode** – Makes random valid moves; occasionally misses blocks.
+    -   **Hard Mode** – Implements a full **Minimax algorithm**; unbeatable (worst-case: draw).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+-   📈 **Score & History Tracking**
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+    -   Track **wins / losses / draws** across multiple games.
+    -   Display the **current streak** and its owner.
+    -   Persist all data in **localStorage** for continuity.
+    -   View detailed match history in an **Ant Design Table**.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+-   ⚙️ **Performance Metrics**
+
+    -   Display the **number of positions evaluated** (Hard Mode only).
+    -   Measure and show **AI “thinking time”** in milliseconds.
+    -   Automatically update metrics after each AI move.
+
+-   💾 **Persistent Storage**
+
+    -   Automatically saves game stats, scores, and history in the browser.
+
+-   🖥️ **Clean & Responsive UI**
+
+    -   Modern, minimalistic interface.
+    -   Easy to customize with **Ant Design**.
+
+---
+
+## 🏗️ Project Structure
+
+```
+src/
+├── assets/
+├── components/
+├── game/
+│   ├── constants.ts
+│   ├── core.ts # Game core logic (minimax)
+│   └── utils.ts
+├── hooks/
+├── types/
+├── pages/
+└── App.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Prerequisites
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Before you begin, ensure you have the following installed:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+-   **Node.js** >= 20.19.0
+-   **yarn** >= 4.0.0
+-   **Git**
+
+## 🚀 Quick Start
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Kant2510/tic-tac-toe.git
+cd tic-tac-toe
 ```
+
+### 2. Install Dependencies
+
+```bash
+yarn install
+```
+
+### 3. Development
+
+Start all applications in development mode:
+
+```bash
+yarn run dev
+```
+
+---
+
+## 🕹️ How to Play
+
+1. **Select a Mode:**
+
+    - PvP → Two local players alternate turns.
+    - PvAI → Play against the AI (Easy or Hard).
+
+2. **Gameplay Rules:**
+
+    - Player X always goes first.
+    - Get 3 in a row (horizontally, vertically, or diagonally) to win.
+    - If the board fills up without a winner → it’s a draw.
+
+3. **AI Mode:**
+
+    - Choose difficulty before starting.
+    - Watch the AI “think” in real time with metrics displayed.
+    - Review match history and streaks after each round.
+
+4. **Match History:**
+
+    - View all past results in a table view.
+    - Click 🗑️ **Reset** to clear all data instantly.
+
+---
+
+## 🧠 Explanation of AI Difficulty Levels
+
+### 🟢 Easy Mode
+
+-   Picks random available squares.
+-   Occasionally ignores obvious winning or blocking moves.
+-   Designed to be fun and easily beatable.
+
+### 🔴 Hard Mode
+
+-   Uses the **Minimax algorithm** to simulate every possible move.
+-   Always selects the optimal strategy — **impossible to defeat**.
+
+-   Displays:
+
+    -   ⏱ **Thinking time (ms)**
+    -   🔢 **Evaluated positions**
+
+---
+
+## 📬 Contact
+
+-   Email: [auletuannhat@gmail.com](mailto:auletuannhat@gmail.com)
+-   Github: [Kant2510](https://github.com/Kant2510/ielts-learning-backend-system)
+-   LinkedIn: [Nhat Au](https://www.linkedin.com/in/nhat-au-73a629283)
+
+---
+
+**Happy coding!** 🚀✨

@@ -45,7 +45,7 @@ interface HistoryListProps {
     resetHistory: () => void
 }
 
-const HistoryList = ({ history, resetHistory }: HistoryListProps) => {
+const HistoryPanel = ({ history, resetHistory }: HistoryListProps) => {
     const historyData = useMemo<RecordType[]>(() => getData(history.matches), [history.matches])
 
     return (
@@ -90,4 +90,4 @@ const HistoryList = ({ history, resetHistory }: HistoryListProps) => {
     )
 }
 
-export default HistoryList
+export default HistoryPanel
