@@ -95,13 +95,11 @@ const ResultAnimation = ({ winner, resetGame }: ResultAnimationProps) => {
                         >
                             {winner === 'draw' ? (
                                 <>
-                                    <Square clsName='x' />
-                                    <Square clsName='o' />
+                                    <Square value={-1} />
+                                    <Square value={-2} />
                                 </>
                             ) : (
-                                <>
-                                    <Square clsName={winner} />
-                                </>
+                                <Square value={winner === 'odd' ? -1 : -2} />
                             )}
                         </motion.div>
                         <motion.div

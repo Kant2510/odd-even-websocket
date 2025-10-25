@@ -1,23 +1,30 @@
+import { BOARD_INDICES, SIZE } from '../constants/common'
 import Square from './Square'
 
 interface BoardProps {
-    squares: string[]
-    updateSquares: (ind: string) => void
+    squares: number[]
+    // updateSquares: (ind: number) => void
+    handleMove?: (ind: number) => void
 }
 
-const Board = ({ squares, updateSquares }: BoardProps) => {
+const Board = ({ squares, handleMove }: BoardProps) => {
     return (
         <div
             style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
-                gap: '10px',
+                gridTemplateColumns: `repeat(${SIZE}, 1fr)`,
+                gap: '5px',
                 width: 'fit-content',
-                margin: '0 auto',
             }}
         >
-            {Array.from('012345678').map((ind: string) => (
-                <Square key={ind} ind={ind} updateSquares={updateSquares} clsName={squares[Number(ind)]} />
+            {BOARD_INDICES.map((ind: number) => (
+                <Square
+                    key={ind}
+                    index={ind}
+                    value={squares[ind]}
+                    // updateSquares={updateSquares}
+                    handleMove={handleMove}
+                />
             ))}
         </div>
     )
