@@ -1,49 +1,112 @@
-# 🎯 TicTacToe React
+# Odd-Even Multiplayer
 
-A modern **React + TypeScript** implementation of the classic **TicTacToe** game — featuring an intelligent AI opponent, real-time score tracking, and persistent match history.
-Built for both fun and performance, this project demonstrates strategic AI behavior, optimized React hooks, and a clean, interactive UI.
+A fast-paced, real-time **multiplayer web game** built with modern web technologies.
+Two players — **Odd** and **Even** — compete on a dynamic **5×5 board**, racing to achieve a winning combination before their opponent.
+This project showcases **real-time communication**, **conflict resolution**, and **server authority** concepts fundamental to distributed systems.
 
 ---
 
 ## ✨ Features
 
--   🎮 **2 Game Modes**
+-   🎮 **Real-Time Multiplayer**
 
-    -   **Player vs Player (PvP)** – Play locally with a friend.
-    -   **Player vs AI (PvAI)** – Battle against a smart AI with two distinct difficulty levels.
+    -   Play instantly against another player in your own unique game room.
+    -   See both players’ actions update live, with no page refreshes.
 
--   🧠 **AI Difficulty**
+-   🌐 **WebSocket Communication**
 
-    -   **Easy Mode** – Makes random valid moves; occasionally misses blocks.
-    -   **Hard Mode** – Implements a full **Minimax algorithm**; unbeatable (worst-case: draw).
+    -   Bi-directional, low-latency updates between client and server.
+    -   Every board interaction is synchronized across all connected clients.
 
--   📈 **Score & History Tracking**
+-   🧮 **Server Authority**
 
-    -   Track **wins / losses / draws** across multiple games.
-    -   Display the **current streak** and its owner.
-    -   Persist all data in **localStorage** for continuity.
-    -   View detailed match history in an **Ant Design Table**.
+    -   The backend acts as the **single source of truth** to prevent cheating.
+    -   Ensures all players see a consistent, validated game state.
 
--   ⚙️ **Performance Metrics**
+-   ⚙️ **Operational Transforms**
 
-    -   Display the **number of positions evaluated** (Hard Mode only).
-    -   Measure and show **AI “thinking time”** in milliseconds.
-    -   Automatically update metrics after each AI move.
+    -   Handles **simultaneous clicks** on the same square without conflicts.
+    -   Merges concurrent actions smoothly, guaranteeing fair outcomes.
 
--   💾 **Persistent Storage**
+-   🏠 **Multiple Rooms**
 
-    -   Automatically saves game stats, scores, and history in the browser.
+    -   Each room has a **unique shareable URL** (e.g. `game?room_id=123456`).
+    -   Isolated sessions allow independent games to run in parallel.
 
--   🖥️ **Clean & Responsive UI**
+-   🔄 **Reconnection Handling**
 
-    -   Modern, minimalistic interface.
-    -   Easy to customize with **Ant Design**.
+    -   Players can safely reconnect after network interruptions.
+    -   Game state persists and resyncs automatically.
+
+-   🧩 **Scalable Architecture**
+
+    -   Designed to teach and demonstrate distributed systems concepts.
+    -   Clean separation of logic between **frontend (React)** and **backend (Node.js)**.
+
+---
+
+## 🕹️ The Game Rules
+
+Before diving into the networking mechanics, let’s understand the **core gameplay**:
+
+### **Setup**
+
+-   A **5×5 grid** (25 squares total).
+-   All squares start at **0**.
+-   **Odd Player** goes first, **Even Player** joins second.
+
+### **Gameplay**
+
+-   Click any square to increment its number by **1** (`0 → 1 → 2 → 3 → 4 → ...`).
+-   Both players can click **any square at any time** — there are **no turns**.
+-   Multiple clicks on the same square continue incrementing it.
+
+### **Winning**
+
+-   🟢 **Odd Player wins** if **any row, column, or diagonal** has 5 **odd numbers**.
+    _Examples:_ `[1, 3, 5, 7, 9]` or `[1, 1, 1, 1, 1]`
+-   🔵 **Even Player wins** if **any row, column, or diagonal** has 5 **even numbers**.
+    _Examples:_ `[2, 4, 6, 8, 10]` or `[4, 6, 8, 8, 8]`
+
+---
+
+## 🧠 Core Distributed Systems Concepts
+
+### 1️⃣ **Server Authority**
+
+Only one machine (the **server**) decides what’s true.
+Even though both clients can interact freely, the server validates and broadcasts all updates to ensure fairness and consistency.
+
+### 2️⃣ **Operational Transforms**
+
+If two players click the same square at the same time, the system applies **transformations** so both actions are merged correctly, preserving intent and avoiding desyncs.
+
+### 3️⃣ **WebSocket Communication**
+
+Both clients maintain a live WebSocket connection with the server:
+
+-   When a player clicks a square, an **event** is sent immediately.
+-   The server updates the board state and **broadcasts** it to all players in the same room.
+-   Result: everyone sees the same board in real-time.
+
+---
+
+## ⚡ Tech Stack
+
+| Layer                | Technology                 |
+| -------------------- | -------------------------- |
+| **Frontend**         | React + TypeScript         |
+| **UI Library**       | Ant Design                 |
+| **Backend**          | Node.js (WebSocket server) |
+| **Communication**    | WebSocket (WS)             |
+| **State Management** | Custom React Hooks         |
+| **Deployment**       | Vercel                     |
 
 ---
 
 ## 📌 Live Demo
 
--   [Demo](https://tic-tac-toe-dun-omega.vercel.app/)
+-   [Demo](https://odd-even-websocket.vercel.app/)
 
 ---
 
@@ -52,14 +115,12 @@ Built for both fun and performance, this project demonstrates strategic AI behav
 ```
 src/
 ├── assets/
+├── constants/
 ├── components/
-├── game/
-│   ├── constants.ts
-│   ├── core.ts # Game core logic (minimax)
-│   └── utils.ts
 ├── hooks/
 ├── types/
 ├── pages/
+├── utils/
 └── App.tsx
 ```
 
@@ -76,8 +137,8 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Kant2510/tic-tac-toe.git
-cd tic-tac-toe
+git clone https://github.com/Kant2510/odd-even-websocket.git
+cd odd-even-websocket
 ```
 
 ### 2. Install Dependencies
@@ -96,49 +157,30 @@ yarn run dev
 
 ---
 
-## 🕹️ How to Play
+## 🧰 Room System
 
-1. **Select a Mode:**
+Each match lives inside a unique **room**:
 
-    - PvP → Two local players alternate turns.
-    - PvAI → Play against the AI (Easy or Hard).
+-   Players joining the same room share a synchronized board.
+-   URLs can be shared directly between friends.
+-   Rooms auto-clean when empty.
+-   Room id must be 6 digits.
 
-2. **Gameplay Rules:**
+Example:
 
-    - Player X always goes first.
-    - Get 3 in a row (horizontally, vertically, or diagonally) to win.
-    - If the board fills up without a winner → it’s a draw.
-
-3. **AI Mode:**
-
-    - Choose difficulty before starting.
-    - Watch the AI “think” in real time with metrics displayed.
-    - Review match history and streaks after each round.
-
-4. **Match History:**
-
-    - View all past results in a table view.
-    - Click 🗑️ **Reset** to clear all data instantly.
+```
+game?room_id=123456
+```
 
 ---
 
-## 🧠 Explanation of AI Difficulty Levels
+## 📈 Future Enhancements
 
-### 🟢 Easy Mode
-
--   Picks random available squares.
--   Occasionally ignores obvious winning or blocking moves.
--   Designed to be fun and easily beatable.
-
-### 🔴 Hard Mode
-
--   Uses the **Minimax algorithm** to simulate every possible move.
--   Always selects the optimal strategy — **impossible to defeat**.
-
--   Displays:
-
-    -   ⏱ **Thinking time (ms)**
-    -   🔢 **Evaluated positions**
+-   [ ] Spectator mode for watching live games.
+-   [ ] In-game chat system (WebSocket text channel).
+-   [ ] Player authentication & profile stats.
+-   [ ] Leaderboards across rooms.
+-   [ ] Improved animation & sound effects.
 
 ---
 
